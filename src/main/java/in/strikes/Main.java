@@ -1,5 +1,6 @@
 package in.strikes;
 
+import in.strikes.model.Student;
 import in.strikes.model.StudentRepository;
 
 import java.sql.Connection;
@@ -10,11 +11,13 @@ public class Main {
     public static void main(String[] args) {
 
         StudentRepository studentRepository = new StudentRepository();
-        studentRepository.createUSer();
+        studentRepository.createStudent(new Student("Shikha" , "shikha34@gmail.com" , 22));
 
-        //studentRepository.updateUser();
+        //studentRepository.updateStudent();
 
-        //studentRepository.deleteUser();
+        //studentRepository.deleteStudent();
+
+        //studentRepository.getStudentById();
     }
 
 }

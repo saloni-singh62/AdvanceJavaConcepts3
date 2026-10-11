@@ -8,15 +8,23 @@ public class StudentRepository {
     String username = "root";
     String password = "root";
 
-    public void createUSer() {
+    public void createStudent(Student student) {
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
 
             //System.out.println("Database connected successfully");
 
             Statement statement = connection.createStatement();
-            String sql = "Insert INTO students(name , email , age)" +
-                    "VALUES('Seema' , 'seema123@gmail.com' , 28)";
+
+            //String sql = "Insert INTO students(name , email , age)" +
+                   // "VALUES('Shreya' , 'shreya123@gmail.com' , 28)";
+
+            String sql = """
+                    INSERT INTO students(name , email , age)
+                    VALUES('%s' , '%s' , '%d')
+                    """.formatted(student.getName() ,
+                    student.getEmail() , student.getAge()); // from java 15,16
+
             int result = statement.executeUpdate(sql);
 
             if (result == 1) {
@@ -31,7 +39,7 @@ public class StudentRepository {
         }
     }
 
-    public void updateUser() {
+    public void updateStudent() {
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
 
@@ -54,14 +62,14 @@ public class StudentRepository {
         }
     }
 
-    public void deleteUser() {
+    public void deleteStudent() {
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
 
             //System.out.println("Database connected successfully");
 
             Statement statement = connection.createStatement();
-            String sql = "DELETE from students WHERE id = 1";
+            String sql = "DELETE from students WHERE id = 3";
             int result = statement.executeUpdate(sql);
 
             if (result == 1) {
@@ -76,13 +84,13 @@ public class StudentRepository {
         }
     }
 
-    public void getUserById() {
+    public void getStudentById() {
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             Statement statement = connection.createStatement();
 
             String sql = "SELECT id , name , email , age" +
-                    " FROM students where id = 1";
+                    " FROM students where id = 4";
 
             ResultSet resultSet = statement.executeQuery(sql);
             resultSet.next();
@@ -95,6 +103,27 @@ public class StudentRepository {
 
     }
 }
+    public void completeCRUD(){
+        try{
+            Connection connection = DriverManager.getConnection(url , username , password);
+            Statement statement = connection.createStatement();
+            String sql ="SELECT id , name , email ,age"
+                    + "FROM students where id = 4";
+            boolean result = statement.execute(sql); // returns boolean value
+            if(result){
+                ResultSet resultSet = statement.getResultSet();
+            }
+            else{
+                int rowAffected = statement.getUpdateCount();
+            }
+
+            connection.close();
+        }
+        catch(SQLException e){
+            System.out.println("Database Connection FAILED");
+            e.printStackTrace();
+        }
+    }
     private Student mapRow(ResultSet resultset) throws SQLException {
         Student student = new Student();
 
